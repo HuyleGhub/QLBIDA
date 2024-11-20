@@ -13,8 +13,10 @@ using DevExpress.Data.Filtering;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using DevExpress.Persistent.Base;
 namespace QLBIDA.Module.BusinessObjects.QLBIDA
 {
+    [DefaultClassOptions]
 
     [DefaultProperty("soLuong")]
     public partial class HoaDonCT : DevExpress.Persistent.BaseImpl.BaseObject
