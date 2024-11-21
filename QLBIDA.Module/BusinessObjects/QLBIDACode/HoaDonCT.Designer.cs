@@ -33,7 +33,8 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
         public DichVu DichVuID
         {
             get { return fDichVuID; }
-            set { 
+            set
+            {
                 if (SetPropertyValue<DichVu>(nameof(DichVuID), ref fDichVuID, value)
                      && !IsLoading && !IsDeleted && value != null)
                     donGia = value.giaBan;
