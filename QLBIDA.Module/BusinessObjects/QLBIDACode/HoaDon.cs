@@ -10,13 +10,18 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
 
     public partial class HoaDon
     {
-        public HoaDon(Session session) : base(session) { }
-        public override void AfterConstruction() { 
+        public HoaDon(Session session) : base(session)
+        {
+            fthoiGianBatDau = DateTime.Now;
+            fthoiGianKetThuc = DateTime.Now;
+            fngayTao = DateTime.Now;
+        }
+        public override void AfterConstruction()
+        {
             base.AfterConstruction();
-            if (Session.IsNewObject(this))
-            {
-                ngayTao = DateTime.Now;
-            }
+            fthoiGianBatDau = DateTime.Now;
+            fthoiGianKetThuc = DateTime.Now;
+            fngayTao = DateTime.Now;
         }
     }
 

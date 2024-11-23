@@ -26,8 +26,8 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
             set { SetPropertyValue<NhanVien>(nameof(NhanVienID), ref fNhanVienID, value); }
         }
         DateTime fgioVao;
-        [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "dd/MM/yyyy HH:mm"),
-DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:dd/MM/yyyy HH:mm}")
+        [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "HH:mm"),
+DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:HH:mm}")
 ]
         public DateTime gioVao
         {
@@ -35,14 +35,43 @@ DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:dd/MM/yyyy HH:mm}"
             set { SetPropertyValue<DateTime>(nameof(gioVao), ref fgioVao, value); }
         }
         DateTime fgioRa;
-        [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "dd/MM/yyyy HH:mm"),
-DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:dd/MM/yyyy HH:mm}")
+        [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "HH:mm"),
+DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:HH:mm}")
 ]
         public DateTime gioRa
         {
             get { return fgioRa; }
             set { SetPropertyValue<DateTime>(nameof(gioRa), ref fgioRa, value); }
         }
+        public TimeSpan TongGioLamViec
+        {
+            get
+            {
+                return gioRa - gioVao;
+            }
+        }
+        decimal fLuongMotGio;
+        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###")]
+        public decimal LuongMotGio
+        {
+            get { return fLuongMotGio; }
+            set { SetPropertyValue<decimal>(nameof(LuongMotGio), ref fLuongMotGio, value); }
+        }
+
+        // Calculated property for total salary
+        decimal ftongLuong;
+        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###")]
+        public decimal TongLuong
+        {
+            get
+            {
+                // Use stored field for persistence
+                ftongLuong = Math.Round((decimal)TongGioLamViec.TotalHours * LuongMotGio, 2);
+                return ftongLuong;
+            }
+            set { SetPropertyValue<decimal>(nameof(TongLuong), ref ftongLuong, value); }
+        }
+
     }
 
 }
