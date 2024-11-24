@@ -23,7 +23,15 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
         public NhanVien NhanVienID
         {
             get { return fNhanVienID; }
-            set { SetPropertyValue<NhanVien>(nameof(NhanVienID), ref fNhanVienID, value); }
+            set
+            {
+                SetPropertyValue<NhanVien>(nameof(NhanVienID), ref fNhanVienID, value);
+                if (!IsLoading && value != null)
+                {
+                    // Automatically set base salary from NhanVien when assigned
+                    luongCoBan = value.mucLuong;
+                }
+            }
         }
         string fnam;
         public string nam
@@ -37,23 +45,86 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
             get { return fthang; }
             set { SetPropertyValue<string>(nameof(thang), ref fthang, value); }
         }
-        DateTime fsoGio;
-        [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "HH:mm"),
-DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:HH:mm}")
-]
-        public DateTime soGio
+
+        decimal fsoGioLamViec;
+        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###")]
+        public decimal soGioLamViec
         {
-            get { return fsoGio; }
-            set { SetPropertyValue<DateTime>(nameof(soGio), ref fsoGio, value); }
+            get
+            {
+                // Calculate total working hours from ChamCong records
+                if (NhanVienID != null)
+                {
+                    fsoGioLamViec = CalculateTotalWorkingHours();
+                }
+                return fsoGioLamViec;
+            }
+            set { SetPropertyValue<decimal>(nameof(soGioLamViec), ref fsoGioLamViec, value); }
         }
+
+        decimal fluongCoBan;
+        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###"),
+        DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
+        public decimal luongCoBan
+        {
+            get { return fluongCoBan; }
+            set { SetPropertyValue<decimal>(nameof(luongCoBan), ref fluongCoBan, value); }
+        }
+
+        decimal fphuCap;
+        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###"),
+        DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
+        public decimal phuCap
+        {
+            get { return fphuCap; }
+            set { SetPropertyValue<decimal>(nameof(phuCap), ref fphuCap, value); }
+        }
+
         decimal fluong;
         [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###"),
-DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
+        DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
         public decimal luong
         {
-            get { return fluong; }
+            get
+            {
+                // Tính lại tổng lương mỗi khi truy xuất
+                fluong = CalculateTotalSalary();
+                return fluong;
+            }
             set { SetPropertyValue<decimal>(nameof(luong), ref fluong, value); }
         }
+        private decimal CalculateTotalWorkingHours()
+        {
+            // Lọc bản ghi chấm công theo tháng và năm
+            var chamCongRecords = NhanVienID.ChamCongs
+                .Where(cc => cc.gioVao.Year.ToString() == nam &&
+                             cc.gioVao.Month.ToString() == thang)
+                .ToList();
+
+            // Tính tổng số giờ làm việc
+            return (decimal)chamCongRecords.Sum(cc => cc.TongGioLamViec.TotalHours);
+        }
+
+        private decimal CalculateTotalSalary()
+        {
+            // Lương cơ bản từ mức lương nhân viên
+            decimal baseSalary = luongCoBan;
+
+            // Số giờ làm việc chuẩn
+            decimal standardHours = 160;
+
+            // Tính lương làm thêm
+            decimal overtimeRate = luongCoBan / standardHours * 1.5m;
+            decimal overtimeHours = Math.Max(0, soGioLamViec - standardHours);
+            decimal overtimePay = overtimeHours * overtimeRate;
+
+            // Phụ cấp
+            decimal allowance = phuCap > 0 ? phuCap : baseSalary * 0.1m;
+
+            // Tính tổng lương
+            return baseSalary + allowance + overtimePay;
+        }
+
     }
 
 }

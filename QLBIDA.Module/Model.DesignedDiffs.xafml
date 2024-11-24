@@ -10,6 +10,8 @@
           <Item Id="@228e6d39-4717-4c66-9a60-a83d5e35242e" ViewId="DichVu_ListView" Caption="Dịch Vụ" ImageName="BO_StateMachine" IsNewNode="True" />
           <Item Id="@2e4978fd-e4b1-4277-ba0b-644adf215f3b" ViewId="Ban_ListView" Caption="Bàn Bida" ImageName="AddParagraphToTableOfContents" IsNewNode="True" />
           <Item Id="@789e2ad0-9498-476c-93c1-0aacaaec313f" ViewId="NhanVien_ListView" Caption="Nhân Viên" ImageName="BO_Position" IsNewNode="True" />
+          <Item Id="@965ad3f7-3b04-488a-ad4b-7ebe14f5dff6" ViewId="ChamCong_ListView" IsNewNode="True" />
+          <Item Id="@972d6911-b900-4987-9ee7-fda66dd89c0e" ViewId="BangLuong_ListView" IsNewNode="True" />
           <Item Id="@cf4838c5-64fb-4899-89b9-25bc5f8f0b90" ViewId="HoaDon_ListView" Caption="Hóa Đơn" ImageName="BO_Invoice" IsNewNode="True" />
         </Items>
       </Item>
@@ -23,7 +25,10 @@
   </SchemaModules>
   <Views>
     <ListView Id="ApplicationUser_ListView" Caption="Users" />
+    <ListView Id="Ban_HoaDons_ListView" AllowEdit="True" NewItemRowPosition="Top" />
     <ListView Id="Ban_ListView" AllowEdit="True" NewItemRowPosition="Top" />
+    <ListView Id="BangLuong_ListView" AllowEdit="True" NewItemRowPosition="Top" />
+    <ListView Id="ChamCong_ListView" AllowEdit="True" NewItemRowPosition="Top" />
     <ListView Id="DichVu_ListView" AllowEdit="True" NewItemRowPosition="Top" />
     <ListView Id="HoaDon_HoaDonCTs_ListView" NewItemRowPosition="Top" AllowEdit="True" />
     <ListView Id="HoaDon_ListView" AllowEdit="True" NewItemRowPosition="Top" />

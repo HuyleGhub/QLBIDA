@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
 using DevExpress.Persistent.Base;
+using System.Data.SqlTypes;
 namespace QLBIDA.Module.BusinessObjects.QLBIDA
 {
     [DefaultClassOptions]
@@ -21,6 +22,7 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
     [DefaultProperty("BanID")]
     public partial class HoaDon : DevExpress.Persistent.BaseImpl.BaseObject
     {
+
         Ban fBanID;
         [Association(@"HoaDonReferencesBan")]
         public Ban BanID
@@ -37,23 +39,37 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
         }
         DateTime fthoiGianBatDau;
         [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "HH:mm"),
-DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:HH:mm}")
-]
+         DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:HH:mm}")]
         public DateTime thoiGianBatDau
         {
             get { return fthoiGianBatDau; }
-            set { SetPropertyValue<DateTime>(nameof(thoiGianBatDau), ref fthoiGianBatDau, value); }
+            set
+            {
+                // Validate thời gian trước khi set
+                if (value < SqlDateTime.MinValue.Value)
+                {
+                    value = DateTime.Now;
+                }
+                SetPropertyValue<DateTime>(nameof(thoiGianBatDau), ref fthoiGianBatDau, value);
+            }
         }
         DateTime fthoiGianKetThuc;
         [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "HH:mm"),
-DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:HH:mm}")
-]
+         DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:HH:mm}")]
         public DateTime thoiGianKetThuc
         {
             get { return fthoiGianKetThuc; }
-            set { SetPropertyValue<DateTime>(nameof(thoiGianKetThuc), ref fthoiGianKetThuc, value); }
+            set
+            {
+                // Validate thời gian trước khi set
+                if (value < SqlDateTime.MinValue.Value)
+                {
+                    value = DateTime.Now;
+                }
+                SetPropertyValue<DateTime>(nameof(thoiGianKetThuc), ref fthoiGianKetThuc, value);
+            }
         }
-        
+
         [PersistentAlias("ToStr(Floor(ToDecimal(DateDiffMinute([thoiGianBatDau], [thoiGianKetThuc])) / 60)) + ':' + " +
                      "IIF(DateDiffMinute([thoiGianBatDau], [thoiGianKetThuc]) % 60 < 10, '0', '') + " +
                      "ToStr(DateDiffMinute([thoiGianBatDau], [thoiGianKetThuc]) % 60)")]
@@ -63,21 +79,28 @@ DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:HH:mm}")
         }
         DateTime fngayTao;
         [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "dd/MM/yyyy HH:mm"),
-DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:dd/MM/yyyy HH:mm}")
-]
+         DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:dd/MM/yyyy HH:mm}")]
         public DateTime ngayTao
         {
             get { return fngayTao; }
-            set { SetPropertyValue<DateTime>(nameof(ngayTao), ref fngayTao, value); }
+            set
+            {
+                // Validate ngày tạo
+                if (value < SqlDateTime.MinValue.Value)
+                {
+                    value = DateTime.Now;
+                }
+                SetPropertyValue<DateTime>(nameof(ngayTao), ref fngayTao, value);
+            }
         }
-        
+
         [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###")]
         [PersistentAlias("ToDecimal(DateDiffMinute([thoiGianBatDau], [thoiGianKetThuc])) * ([BanID].[giaTheoGio] / 60.0)")]
         public decimal tienGioChoi
         {
             get { return Convert.ToDecimal(EvaluateAlias(nameof(tienGioChoi))); }
         }
-        
+
         [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###")]
         public decimal tongTien
         {
