@@ -12,6 +12,8 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
     {
         public ChamCong(Session session) : base(session) { }
         public override void AfterConstruction() { base.AfterConstruction(); }
+
+
     }
 
 }

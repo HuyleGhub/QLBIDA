@@ -13,6 +13,7 @@ using DevExpress.Data.Filtering;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using DevExpress.ExpressApp.Model;
 namespace QLBIDA.Module.BusinessObjects.QLBIDA
 {
 
@@ -25,48 +26,71 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
             get { return fhoTen; }
             set { SetPropertyValue<string>(nameof(hoTen), ref fhoTen, value); }
         }
+
         int fsoDT;
         [DevExpress.Persistent.Validation.RuleUniqueValue]
-        [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "(\\0###) ### ####")]
-        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:(\\0###) ### ####}")]
+        [ModelDefault("EditMask", "(\\0###) ### ####")]
+        [ModelDefault("DisplayFormat", "{0:(\\0###) ### ####}")]
         public int soDT
         {
             get { return fsoDT; }
             set { SetPropertyValue<int>(nameof(soDT), ref fsoDT, value); }
         }
+
         DateTime fngayVaoLam;
-        [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "dd/MM/yyyy HH:mm"),
-DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:dd/MM/yyyy HH:mm}")
-]
+        [ModelDefault("EditMask", "dd/MM/yyyy HH:mm"),
+        ModelDefault("DisplayFormat", "{0:dd/MM/yyyy HH:mm}")]
         public DateTime ngayVaoLam
         {
             get { return fngayVaoLam; }
             set { SetPropertyValue<DateTime>(nameof(ngayVaoLam), ref fngayVaoLam, value); }
         }
+
         decimal fmucLuong;
-        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###"),
-DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
+        [ModelDefault("DisplayFormat", "### ### ### ###"),
+        ModelDefault("EditMask", "### ### ### ###")]
         public decimal mucLuong
         {
-            get { return fmucLuong; }
+            get
+            {
+                // Calculate base salary from the most recent BangLuong
+                return CalculateBaseSalary();
+            }
             set { SetPropertyValue<decimal>(nameof(mucLuong), ref fmucLuong, value); }
         }
+
+        private decimal CalculateBaseSalary()
+        {
+            // Get the most recent BangLuong record for this employee
+            var latestBangLuong = BangLuongs
+                .OrderByDescending(bl =>
+                    int.Parse(bl.nam ?? "0") * 12 + int.Parse(bl.thang ?? "0"))
+                .FirstOrDefault();
+
+            // Return the base salary from the latest record, or 0 if no records exist
+            return latestBangLuong?.luongCoBan ?? 0;
+        }
+
         string fchucVu;
         public string chucVu
         {
             get { return fchucVu; }
             set { SetPropertyValue<string>(nameof(chucVu), ref fchucVu, value); }
         }
+
         [Association(@"HoaDonReferencesNhanVien"), Aggregated]
         public XPCollection<HoaDon> HoaDons { get { return GetCollection<HoaDon>(nameof(HoaDons)); } }
+
         [Association(@"ChamCongReferencesNhanVien"), Aggregated]
         public XPCollection<ChamCong> ChamCongs { get { return GetCollection<ChamCong>(nameof(ChamCongs)); } }
+
         [Association(@"BangLuongReferencesNhanVien"), Aggregated]
         public XPCollection<BangLuong> BangLuongs { get { return GetCollection<BangLuong>(nameof(BangLuongs)); } }
+
         [Association(@"PhieuChiReferencesNhanVien"), Aggregated]
         public XPCollection<PhieuChi> PhieuChis { get { return GetCollection<PhieuChi>(nameof(PhieuChis)); } }
+
         [Association(@"PhieuNhapReferencesNhanVien"), Aggregated]
         public XPCollection<PhieuNhap> PhieuNhaps { get { return GetCollection<PhieuNhap>(nameof(PhieuNhaps)); } }
     }
-
 }

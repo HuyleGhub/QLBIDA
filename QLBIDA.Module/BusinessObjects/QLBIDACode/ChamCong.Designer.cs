@@ -13,6 +13,7 @@ using DevExpress.Data.Filtering;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using DevExpress.ExpressApp.Model;
 namespace QLBIDA.Module.BusinessObjects.QLBIDA
 {
 
@@ -25,23 +26,44 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
             get { return fNhanVienID; }
             set { SetPropertyValue<NhanVien>(nameof(NhanVienID), ref fNhanVienID, value); }
         }
+        DateTime fNgayChamCong; // Add a new field for the date
+        public DateTime NgayChamCong
+        {
+            get { return fNgayChamCong; }
+            set { SetPropertyValue<DateTime>(nameof(NgayChamCong), ref fNgayChamCong, value); }
+        }
+
         DateTime fgioVao;
-        [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "HH:mm"),
-DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:HH:mm}")
-]
+        [ModelDefault("EditMask", "HH:mm")]
+        [ModelDefault("DisplayFormat", "{0:HH:mm}")]
         public DateTime gioVao
         {
             get { return fgioVao; }
-            set { SetPropertyValue<DateTime>(nameof(gioVao), ref fgioVao, value); }
+            set
+            {
+                // Combine the date with the time
+                if (NgayChamCong != DateTime.MinValue)
+                {
+                    value = NgayChamCong.Date + value.TimeOfDay;
+                }
+                SetPropertyValue<DateTime>(nameof(gioVao), ref fgioVao, value);
+            }
         }
         DateTime fgioRa;
-        [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "HH:mm"),
-DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:HH:mm}")
-]
+        [ModelDefault("EditMask", "HH:mm")]
+        [ModelDefault("DisplayFormat", "{0:HH:mm}")]
         public DateTime gioRa
         {
             get { return fgioRa; }
-            set { SetPropertyValue<DateTime>(nameof(gioRa), ref fgioRa, value); }
+            set
+            {
+                // Combine the date with the time
+                if (NgayChamCong != DateTime.MinValue)
+                {
+                    value = NgayChamCong.Date + value.TimeOfDay;
+                }
+                SetPropertyValue<DateTime>(nameof(gioRa), ref fgioRa, value);
+            }
         }
         public TimeSpan TongGioLamViec
         {
@@ -71,6 +93,7 @@ DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:HH:mm}")
             }
             set { SetPropertyValue<decimal>(nameof(TongLuong), ref ftongLuong, value); }
         }
+
 
     }
 

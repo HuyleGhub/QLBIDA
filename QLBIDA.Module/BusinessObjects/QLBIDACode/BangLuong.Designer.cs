@@ -62,6 +62,10 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
             set { SetPropertyValue<decimal>(nameof(soGioLamViec), ref fsoGioLamViec, value); }
         }
 
+       
+
+
+
         decimal fluongCoBan;
         [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###"),
         DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
@@ -93,6 +97,7 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
             }
             set { SetPropertyValue<decimal>(nameof(luong), ref fluong, value); }
         }
+        // Hàm tính tổng số giờ làm việc
         private decimal CalculateTotalWorkingHours()
         {
             // Lọc bản ghi chấm công theo tháng và năm
