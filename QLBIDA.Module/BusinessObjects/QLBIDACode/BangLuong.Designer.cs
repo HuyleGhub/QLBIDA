@@ -13,6 +13,7 @@ using DevExpress.Data.Filtering;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Reflection;
+using DevExpress.ExpressApp.Model;
 namespace QLBIDA.Module.BusinessObjects.QLBIDA
 {
 
@@ -28,17 +29,19 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
                 SetPropertyValue<NhanVien>(nameof(NhanVienID), ref fNhanVienID, value);
                 if (!IsLoading && value != null)
                 {
-                    // Automatically set base salary from NhanVien when assigned
+                    // Automatically set base salary from NhanVien's salary level
                     luongCoBan = value.mucLuong;
                 }
             }
         }
+
         string fnam;
         public string nam
         {
             get { return fnam; }
             set { SetPropertyValue<string>(nameof(nam), ref fnam, value); }
         }
+
         string fthang;
         public string thang
         {
@@ -47,7 +50,7 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
         }
 
         decimal fsoGioLamViec;
-        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###")]
+        [ModelDefault("DisplayFormat", "### ### ### ###")]
         public decimal soGioLamViec
         {
             get
@@ -62,74 +65,58 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
             set { SetPropertyValue<decimal>(nameof(soGioLamViec), ref fsoGioLamViec, value); }
         }
 
-       
-
-
-
         decimal fluongCoBan;
-        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###"),
-        DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
+        [ModelDefault("DisplayFormat", "### ### ### ###"),
+        ModelDefault("EditMask", "### ### ### ###")]
         public decimal luongCoBan
         {
             get { return fluongCoBan; }
             set { SetPropertyValue<decimal>(nameof(luongCoBan), ref fluongCoBan, value); }
         }
 
-        decimal fphuCap;
-        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###"),
-        DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
-        public decimal phuCap
-        {
-            get { return fphuCap; }
-            set { SetPropertyValue<decimal>(nameof(phuCap), ref fphuCap, value); }
-        }
-
         decimal fluong;
-        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###"),
-        DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
+        [ModelDefault("DisplayFormat", "{0:N0}")]
+        [ModelDefault("EditMask", "0")]
         public decimal luong
         {
             get
             {
-                // Tính lại tổng lương mỗi khi truy xuất
+                // Calculate total salary based on total working hours
                 fluong = CalculateTotalSalary();
                 return fluong;
             }
             set { SetPropertyValue<decimal>(nameof(luong), ref fluong, value); }
         }
-        // Hàm tính tổng số giờ làm việc
+
         private decimal CalculateTotalWorkingHours()
         {
-            // Lọc bản ghi chấm công theo tháng và năm
+            // Filter time attendance records by month and year
             var chamCongRecords = NhanVienID.ChamCongs
-                .Where(cc => cc.gioVao.Year.ToString() == nam &&
-                             cc.gioVao.Month.ToString() == thang)
+                .Where(cc => cc.NgayChamCong.Year.ToString() == nam &&
+                             cc.NgayChamCong.Month.ToString() == thang)
                 .ToList();
 
-            // Tính tổng số giờ làm việc
+            // Calculate total working hours
             return (decimal)chamCongRecords.Sum(cc => cc.TongGioLamViec.TotalHours);
         }
 
         private decimal CalculateTotalSalary()
         {
-            // Lương cơ bản từ mức lương nhân viên
-            decimal baseSalary = luongCoBan;
+            // Calculate total salary based on total working hours
+            if (NhanVienID != null)
+            {
+                var chamCongRecords = NhanVienID.ChamCongs
+                    .Where(cc => cc.NgayChamCong.Year.ToString() == nam &&
+                                 cc.NgayChamCong.Month.ToString() == thang)
+                    .ToList();
 
-            // Số giờ làm việc chuẩn
-            decimal standardHours = 160;
-
-            // Tính lương làm thêm
-            decimal overtimeRate = luongCoBan / standardHours * 1.5m;
-            decimal overtimeHours = Math.Max(0, soGioLamViec - standardHours);
-            decimal overtimePay = overtimeHours * overtimeRate;
-
-            // Phụ cấp
-            decimal allowance = phuCap > 0 ? phuCap : baseSalary * 0.1m;
-
-            // Tính tổng lương
-            return baseSalary + allowance + overtimePay;
+                // Sum the total salary from all time attendance records
+                return chamCongRecords.Sum(cc => cc.TongLuong);
+            }
+            else
+            {
+                return 0; // Return 0 if NhanVienID is null
+            }
         }
-
     }
-
 }

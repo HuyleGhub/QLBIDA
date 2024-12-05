@@ -7,12 +7,15 @@
     <Items>
       <Item Id="@5a43ffc4-6fdf-4401-9e6b-9a0c090743aa" Caption="Quản Lý" ImageName="BO_Person" IsNewNode="True">
         <Items IsNewNode="True">
+          <Item Id="@1d2091f6-4763-4f30-ab27-8f54a42fb684" ViewId="PhieuNhap_ListView" Caption="Phiếu Nhập" IsNewNode="True" />
           <Item Id="@228e6d39-4717-4c66-9a60-a83d5e35242e" ViewId="DichVu_ListView" Caption="Dịch Vụ" ImageName="BO_StateMachine" IsNewNode="True" />
           <Item Id="@2e4978fd-e4b1-4277-ba0b-644adf215f3b" ViewId="Ban_ListView" Caption="Bàn Bida" ImageName="AddParagraphToTableOfContents" IsNewNode="True" />
           <Item Id="@789e2ad0-9498-476c-93c1-0aacaaec313f" ViewId="NhanVien_ListView" Caption="Nhân Viên" ImageName="BO_Position" IsNewNode="True" />
+          <Item Id="@8ca59435-05d9-4750-a371-1f24210523a3" ViewId="PhieuChi_ListView" Caption="Phiếu Chi" IsNewNode="True" />
           <Item Id="@965ad3f7-3b04-488a-ad4b-7ebe14f5dff6" ViewId="ChamCong_ListView" IsNewNode="True" />
           <Item Id="@972d6911-b900-4987-9ee7-fda66dd89c0e" ViewId="BangLuong_ListView" IsNewNode="True" />
           <Item Id="@cf4838c5-64fb-4899-89b9-25bc5f8f0b90" ViewId="HoaDon_ListView" Caption="Hóa Đơn" ImageName="BO_Invoice" IsNewNode="True" />
+          <Item Id="@dfb5b428-6001-4c6c-a9e5-13e2ddb8652c" ViewId="NhaCungCap_ListView" Caption="Nhà Cung Cấp" IsNewNode="True" />
         </Items>
       </Item>
     </Items>
@@ -33,6 +36,9 @@
     <ListView Id="HoaDon_HoaDonCTs_ListView" NewItemRowPosition="Top" AllowEdit="True" />
     <ListView Id="HoaDon_ListView" AllowEdit="True" NewItemRowPosition="Top" />
     <ListView Id="HoaDonCT_ListView" AllowEdit="True" NewItemRowPosition="Top" />
+    <ListView Id="NhaCungCap_ListView" AllowEdit="True" NewItemRowPosition="Top" />
     <ListView Id="NhanVien_ListView" NewItemRowPosition="Top" AllowEdit="True" />
+    <ListView Id="PhieuChi_ListView" AllowEdit="True" NewItemRowPosition="Top" />
+    <ListView Id="PhieuNhap_ListView" AllowEdit="True" NewItemRowPosition="Top" />
   </Views>
 </Application>
