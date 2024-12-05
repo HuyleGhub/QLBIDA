@@ -57,7 +57,16 @@ DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
             get { return fchucVu; }
             set { SetPropertyValue<string>(nameof(chucVu), ref fchucVu, value); }
         }
-       
+        [Association(@"HoaDonReferencesNhanVien"), Aggregated]
+        public XPCollection<HoaDon> HoaDons { get { return GetCollection<HoaDon>(nameof(HoaDons)); } }
+        [Association(@"ChamCongReferencesNhanVien"), Aggregated]
+        public XPCollection<ChamCong> ChamCongs { get { return GetCollection<ChamCong>(nameof(ChamCongs)); } }
+        [Association(@"BangLuongReferencesNhanVien"), Aggregated]
+        public XPCollection<BangLuong> BangLuongs { get { return GetCollection<BangLuong>(nameof(BangLuongs)); } }
+        [Association(@"PhieuChiReferencesNhanVien"), Aggregated]
+        public XPCollection<PhieuChi> PhieuChis { get { return GetCollection<PhieuChi>(nameof(PhieuChis)); } }
+        [Association(@"PhieuNhapReferencesNhanVien"), Aggregated]
+        public XPCollection<PhieuNhap> PhieuNhaps { get { return GetCollection<PhieuNhap>(nameof(PhieuNhaps)); } }
     }
 
 }
