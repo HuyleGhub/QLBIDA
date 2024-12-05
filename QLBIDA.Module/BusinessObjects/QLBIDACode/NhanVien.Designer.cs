@@ -46,17 +46,18 @@ DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:dd/MM/yyyy HH:mm}"
         decimal fmucLuong;
         [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###"),
 DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
+        public decimal mucLuong
+        {
+            get { return fmucLuong; }
+            set { SetPropertyValue<decimal>(nameof(mucLuong), ref fmucLuong, value); }
+        }
+        string fchucVu;
+        public string chucVu
+        {
+            get { return fchucVu; }
+            set { SetPropertyValue<string>(nameof(chucVu), ref fchucVu, value); }
+        }
        
-        [Association(@"HoaDonReferencesNhanVien"), Aggregated]
-        public XPCollection<HoaDon> HoaDons { get { return GetCollection<HoaDon>(nameof(HoaDons)); } }
-        [Association(@"ChamCongReferencesNhanVien"), Aggregated]
-        public XPCollection<ChamCong> ChamCongs { get { return GetCollection<ChamCong>(nameof(ChamCongs)); } }
-        [Association(@"BangLuongReferencesNhanVien"), Aggregated]
-        public XPCollection<BangLuong> BangLuongs { get { return GetCollection<BangLuong>(nameof(BangLuongs)); } }
-        [Association(@"PhieuChiReferencesNhanVien"), Aggregated]
-        public XPCollection<PhieuChi> PhieuChis { get { return GetCollection<PhieuChi>(nameof(PhieuChis)); } }
-        [Association(@"PhieuNhapReferencesNhanVien"), Aggregated]
-        public XPCollection<PhieuNhap> PhieuNhaps { get { return GetCollection<PhieuNhap>(nameof(PhieuNhaps)); } }
     }
 
 }
