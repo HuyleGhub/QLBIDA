@@ -26,7 +26,10 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
             get { return fNhanVienID; }
             set { SetPropertyValue<NhanVien>(nameof(NhanVienID), ref fNhanVienID, value); }
         }
-        DateTime fNgayChamCong; // Add a new field for the date
+
+        DateTime fNgayChamCong;
+        [ModelDefault("EditMask", "dd/MM/yyyy")]
+        [ModelDefault("DisplayFormat", "{0:dd/MM/yyyy}")]
         public DateTime NgayChamCong
         {
             get { return fNgayChamCong; }
@@ -41,14 +44,12 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
             get { return fgioVao; }
             set
             {
-                // Combine the date with the time
-                if (NgayChamCong != DateTime.MinValue)
-                {
-                    value = NgayChamCong.Date + value.TimeOfDay;
-                }
-                SetPropertyValue<DateTime>(nameof(gioVao), ref fgioVao, value);
+                // Combine NgayChamCong with the time part of the input
+                SetPropertyValue<DateTime>(nameof(gioVao), ref fgioVao,
+                    NgayChamCong.Date + value.TimeOfDay);
             }
         }
+
         DateTime fgioRa;
         [ModelDefault("EditMask", "HH:mm")]
         [ModelDefault("DisplayFormat", "{0:HH:mm}")]
@@ -57,14 +58,12 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
             get { return fgioRa; }
             set
             {
-                // Combine the date with the time
-                if (NgayChamCong != DateTime.MinValue)
-                {
-                    value = NgayChamCong.Date + value.TimeOfDay;
-                }
-                SetPropertyValue<DateTime>(nameof(gioRa), ref fgioRa, value);
+                // Combine NgayChamCong with the time part of the input
+                SetPropertyValue<DateTime>(nameof(gioRa), ref fgioRa,
+                    NgayChamCong.Date + value.TimeOfDay);
             }
         }
+
         public TimeSpan TongGioLamViec
         {
             get
@@ -72,29 +71,42 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
                 return gioRa - gioVao;
             }
         }
+
         decimal fLuongMotGio;
-        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###")]
+        [ModelDefault("DisplayFormat", "### ### ### ###")]
         public decimal LuongMotGio
         {
             get { return fLuongMotGio; }
             set { SetPropertyValue<decimal>(nameof(LuongMotGio), ref fLuongMotGio, value); }
         }
 
-        // Calculated property for total salary
         decimal ftongLuong;
-        [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###")]
+        [ModelDefault("DisplayFormat", "### ### ### ###")]
         public decimal TongLuong
         {
             get
             {
-                // Use stored field for persistence
+                // Use decimal multiplication to avoid type mismatch
                 ftongLuong = Math.Round((decimal)TongGioLamViec.TotalHours * LuongMotGio, 2);
                 return ftongLuong;
             }
             set { SetPropertyValue<decimal>(nameof(TongLuong), ref ftongLuong, value); }
         }
 
+        // Override OnSaving to ensure proper datetime handling
+        protected override void OnSaving()
+        {
+            base.OnSaving();
 
+            // Ensure gioVao and gioRa are set with the correct date
+            if (NgayChamCong != DateTime.MinValue)
+            {
+                if (fgioVao == DateTime.MinValue)
+                    fgioVao = NgayChamCong;
+                if (fgioRa == DateTime.MinValue)
+                    fgioRa = NgayChamCong;
+            }
+        }
     }
-
 }
+
