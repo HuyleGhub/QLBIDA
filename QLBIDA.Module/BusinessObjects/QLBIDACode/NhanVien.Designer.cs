@@ -24,7 +24,6 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
         {
             get { return fhoTen; }
             set { SetPropertyValue<string>(nameof(hoTen), ref fhoTen, value); }
-        }
         int fsoDT;
         [DevExpress.Persistent.Validation.RuleUniqueValue]
         [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "(\\0###) ### ####")]
