@@ -39,21 +39,14 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
 DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:dd/MM/yyyy HH:mm}")
 ]
         public DateTime ngayVaoLam
-       
+        {
+            get { return fngayVaoLam; }
+            set { SetPropertyValue<DateTime>(nameof(ngayVaoLam), ref fngayVaoLam, value); }
+        }
         decimal fmucLuong;
         [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###"),
 DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
-        public decimal mucLuong
-        {
-            get { return fmucLuong; }
-            set { SetPropertyValue<decimal>(nameof(mucLuong), ref fmucLuong, value); }
-        }
-        string fchucVu;
-        public string chucVu
-        {
-            get { return fchucVu; }
-            set { SetPropertyValue<string>(nameof(chucVu), ref fchucVu, value); }
-        }
+       
         [Association(@"HoaDonReferencesNhanVien"), Aggregated]
         public XPCollection<HoaDon> HoaDons { get { return GetCollection<HoaDon>(nameof(HoaDons)); } }
         [Association(@"ChamCongReferencesNhanVien"), Aggregated]
