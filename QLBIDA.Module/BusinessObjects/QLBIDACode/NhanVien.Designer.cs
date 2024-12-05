@@ -24,15 +24,12 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
         {
             get { return fhoTen; }
             set { SetPropertyValue<string>(nameof(hoTen), ref fhoTen, value); }
+        }
         int fsoDT;
         [DevExpress.Persistent.Validation.RuleUniqueValue]
         [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "(\\0###) ### ####")]
         [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:(\\0###) ### ####}")]
-        public int soDT
-        {
-            get { return fsoDT; }
-            set { SetPropertyValue<int>(nameof(soDT), ref fsoDT, value); }
-        }
+       
         DateTime fngayVaoLam;
         [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "dd/MM/yyyy HH:mm"),
 DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:dd/MM/yyyy HH:mm}")
