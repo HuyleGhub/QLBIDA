@@ -29,16 +29,17 @@ namespace QLBIDA.Module.BusinessObjects.QLBIDA
         [DevExpress.Persistent.Validation.RuleUniqueValue]
         [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "(\\0###) ### ####")]
         [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:(\\0###) ### ####}")]
-       
+        public int soDT
+        {
+            get { return fsoDT; }
+            set { SetPropertyValue<int>(nameof(soDT), ref fsoDT, value); }
+        }
         DateTime fngayVaoLam;
         [DevExpress.ExpressApp.Model.ModelDefault("EditMask", "dd/MM/yyyy HH:mm"),
 DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "{0:dd/MM/yyyy HH:mm}")
 ]
         public DateTime ngayVaoLam
-        {
-            get { return fngayVaoLam; }
-            set { SetPropertyValue<DateTime>(nameof(ngayVaoLam), ref fngayVaoLam, value); }
-        }
+       
         decimal fmucLuong;
         [DevExpress.ExpressApp.Model.ModelDefault("DisplayFormat", "### ### ### ###"),
 DevExpress.ExpressApp.Model.ModelDefault("EditMask", "### ### ### ###")]
