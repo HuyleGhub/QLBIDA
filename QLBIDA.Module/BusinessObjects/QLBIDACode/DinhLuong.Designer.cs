@@ -6,31 +6,3 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-using System;
-using DevExpress.Xpo;
-using DevExpress.Xpo.Metadata;
-using DevExpress.Data.Filtering;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Reflection;
-namespace QLBIDA.Module.BusinessObjects.QLBIDA
-{
-
-    public partial class DinhLuong : DevExpress.Persistent.BaseImpl.BaseObject
-    {
-        DichVu fDichVuID;
-        [Association(@"DinhLuongReferencesDichVu")]
-        public DichVu DichVuID
-        {
-            get { return fDichVuID; }
-            set { SetPropertyValue<DichVu>(nameof(DichVuID), ref fDichVuID, value); }
-        }
-        double fsoLuong;
-        public double soLuong
-        {
-            get { return fsoLuong; }
-            set { SetPropertyValue<double>(nameof(soLuong), ref fsoLuong, value); }
-        }
-    }
-
-}
